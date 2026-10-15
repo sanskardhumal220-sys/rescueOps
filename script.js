@@ -1140,5 +1140,5 @@ window.addEventListener("click", (e) => {
 });
 
 // Initial boot
-logEvent("SYSTEM_INIT", "ResQ Command initialized. Monitoring 6 official profiles for Operation: Lost Signal.");
+logEvent("SYSTEM_INIT", "RESCUE OPS initialized. Monitoring 6 official profiles for Operation: Lost Signal.");
 updateDashboard();

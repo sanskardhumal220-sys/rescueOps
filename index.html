@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResQ Command — Smart Rescue Dashboard</title>
+  <title>RESCUE OPS — Smart Rescue Dashboard</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -12,10 +12,18 @@
   <header class="app-header">
     <div class="header-container">
       <div class="brand">
-        <img src="assets/rescueops-banner.jpg" alt="RescueOps Logo" class="brand-logo-img">
-        <div>
-          <h1>ResQ Command</h1>
-          <p class="subtitle">Smart Search & Rescue Coordination Dashboard — Operation: Lost Signal</p>
+        <div class="brand-badge-icon">
+          <svg class="brand-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"></path>
+            <path d="M12 8v8"></path>
+            <path d="M8 12h8"></path>
+          </svg>
+        </div>
+        <div class="brand-text-block">
+          <div class="brand-wordmark">
+            <span class="wordmark-rescue">RESCUE</span><span class="wordmark-ops">OPS</span>
+          </div>
+          <p class="subtitle">Search &amp; Rescue Decision Support System &bull; Operation: Lost Signal</p>
         </div>
       </div>
       <div class="header-meta">
@@ -26,7 +34,7 @@
         <button id="advanceTimeBtn" class="btn btn-advance-time" title="Simulate 5 minutes of rescue travel">
           <span>⏩</span> +5 Min Travel
         </button>
-        <div class="disclaimer-badge">Simulated Decision-Support Tool</div>
+        <div class="disclaimer-badge">Decision Support</div>
       </div>
     </div>
   </header>
@@ -332,7 +340,7 @@
 
   <footer class="app-footer">
     <div class="footer-container">
-      <p>ResQ Command &copy; 2026 &mdash; Mountain Search &amp; Rescue Coordinator Dashboard.</p>
+      <p><strong>RESCUE OPS</strong> &copy; 2026 &mdash; Search &amp; Rescue Decision Support System.</p>
       <p class="footer-subtext">Operation: Lost Signal &bull; Zero external dependencies &bull; All distances and ETAs are SIMULATED.</p>
     </div>
   </footer>
