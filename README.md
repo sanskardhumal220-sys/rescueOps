@@ -1,6 +1,10 @@
 # ResQ Command — Smart Rescue Dashboard
 ## Operation: Lost Signal (Official Event Edition)
 
+<p align="center">
+  <img src="assets/rescueops-banner.jpg" alt="RescueOps — Search & Rescue Decision Support System" width="100%" style="border-radius: 8px;">
+</p>
+
 A high-contrast, responsive, zero-dependency emergency decision-support web dashboard built for a mountain search-and-rescue coordinator during a worsening alpine storm.
 
 Built with **plain HTML, CSS, and vanilla JavaScript** with no frameworks, backend, paid APIs, or external AI APIs.
