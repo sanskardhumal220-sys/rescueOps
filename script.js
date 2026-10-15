@@ -685,8 +685,8 @@ function renderTrekkers(list) {
   }
   noResultsMessage.classList.add("hidden");
 
-  // Get available teams for the dropdown
-  const availableTeams = teams.filter(tm => tm.status === "Available");
+  // Get available teams for the dropdown (strictly Available and unassigned)
+  const availableTeams = teams.filter(tm => tm.status === "Available" && !tm.assignedTrekkerId);
 
   list.forEach(item => {
     const card = document.createElement("article");
@@ -896,20 +896,24 @@ function renderTrekkers(list) {
         return;
       }
 
-      const team = teams.find(t => t.id === teamId);
-      const trekker = trekkers.find(t => t.id === trekkerId);
-
-      // Verify single-assignment lock
-      if (team.status !== "Available") {
-        alert(`Rule Enforcement: ${team.name} is already deployed to another assignment. A team cannot handle multiple active tasks.`);
+      // Verify single-assignment lock in logic (both status and assignedTrekkerId)
+      if (team.status !== "Available" || team.assignedTrekkerId !== null) {
+        alert(`Rule Enforcement: ${team.name} is already deployed to another assignment (${team.assignedTrekkerId}). A team cannot handle multiple active tasks.`);
         return;
       }
 
-      team.status = "Available"; // Assigned to mission, staging at base
+      // Immediately set status to En Route and record departure
+      team.status = "En Route";
       team.assignedTrekkerId = trekker.id;
+      team.departureTime = formatSimClock(currentSimMinutes);
+      team.departureSimMinutes = currentSimMinutes;
       trekker.assignedTeam = team.id;
 
-      logEvent("ASSIGNMENT", `Coordinator assigned ${team.name} to missing trekker ${trekker.name} (${trekker.id}) in ${trekker.sector}.`);
+      if (trekker.status === "Missing") {
+        trekker.status = "Search in Progress";
+      }
+
+      logEvent("ASSIGNMENT", `Coordinator assigned ${team.name} to ${trekker.name} (${trekker.id}) in ${trekker.sector}. Unit is immediately En Route (Departure: ${team.departureTime}).`);
       updateDashboard();
     });
   });
