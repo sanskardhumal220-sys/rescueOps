@@ -163,7 +163,7 @@ The sector with the highest composite weight is automatically presented in the p
 ## 8. Assumptions, Sample Data, and Simulation Parameters
 
 ### Official Trekker Profiles (Preserved from Challenge Data)
-All six profiles preserve official event parameters. Incomplete information is explicitly rendered as **"Not reported (Unknown)"** and is never fabricated:
+All six profiles preserve official event parameters. Incomplete information is explicitly rendered as **"Not reported"** and is never fabricated:
 
 | ID | Name | Sector | Last Ping | Verified Elevation | Verified Signal | Verified Battery | Verified Age | Reported Situation & Gear |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -177,9 +177,9 @@ All six profiles preserve official event parameters. Incomplete information is e
 ### Simulated Parameters (Explicitly Distinguished from Real Data)
 1. **Simulation Mission Clock:** Initialized at `09:00 AM` (minutes = 540) to serve as a baseline for the event timestamps (05:55 AM to 08:12 AM).
 2. **Rescue Units:**
-   - **Team Alpha:** Alpine Search & Dog Unit (Base foot speed: 4.0 km/h)
-   - **Team Bravo:** Paramedic & Mountain Extraction (Base foot speed: 4.5 km/h)
-   - **Team Charlie:** ATV & Drone Recon Unit (Base speed: 12.0 km/h)
+   - **Team Alpha:** Alpine Search & Rescue Canine Unit (Base foot speed: 4.0 km/h)
+   - **Team Bravo:** Mountain Paramedic & Technical Extraction Unit (Base foot speed: 4.5 km/h)
+   - **Team Charlie:** Rapid All-Terrain Vehicle (ATV) & Aerial Recon Unit (Base speed: 12.0 km/h)
 3. **Simulated Transit Distances:** Sectors have modeled travel distances from the forward operating base (Sector A: ~2.1–2.5 km, Sector B: ~4.2 km, Sector C: ~6.8 km, Sector D: ~8.5 km). These are **simulated decision-support approximations**, not real GPS survey coordinates.
 4. **Weather Speed Penalties:** Severe Storm (travel speed $\times 0.60$), Freezing Fog ($\times 0.75$), Cold Rain ($\times 0.85$), Clear Skies ($\times 1.00$).
 

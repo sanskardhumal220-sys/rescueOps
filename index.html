@@ -23,12 +23,12 @@
       <div class="header-meta">
         <div class="live-clock-badge">
           <span class="pulse-indicator"></span>
-          <span>Simulated Clock: <strong id="simClock">09:00 AM</strong></span>
+          <span>Mission Clock: <strong id="simClock">09:00 AM</strong></span>
         </div>
-        <button id="advanceTimeBtn" class="btn btn-advance-time" title="Simulate 5 minutes of rescue travel">
-          <span>⏩</span> +5 Min Travel
+        <button id="advanceTimeBtn" class="btn btn-advance-time" title="Advance mission clock by 5 minutes to simulate search team travel">
+          <span>⏩</span> Advance 5 Min Travel
         </button>
-        <div class="disclaimer-badge">Decision Support</div>
+        <div class="disclaimer-badge">Decision Support Active</div>
       </div>
     </div>
   </header>
@@ -39,31 +39,31 @@
       <div class="banner-card sector-recommendation-card" id="recommendedSectorBanner">
         <div class="banner-icon">🎯</div>
         <div class="banner-body">
-          <div class="banner-label">Recommended Primary Sector Attention</div>
-          <h2 class="banner-title" id="recommendSectorTitle">Calculating Sector Priority...</h2>
-          <p class="banner-desc" id="recommendSectorDesc">Analyzing trekker risk weights and cluster severity.</p>
+          <div class="banner-label">Recommended Sector for Immediate Attention</div>
+          <h2 class="banner-title" id="recommendSectorTitle">Evaluating Sector Priority...</h2>
+          <p class="banner-desc" id="recommendSectorDesc">Analyzing trekker risk weights, severe injuries, and cluster density.</p>
         </div>
         <div class="banner-stat" id="sectorRiskStat">
           <span class="stat-number" id="sectorRiskScore">0</span>
-          <span class="stat-caption">Sector Severity Score</span>
+          <span class="stat-caption">Sector Priority Score</span>
         </div>
       </div>
 
       <div class="banner-card weather-card">
         <div class="banner-icon" id="weatherIcon">⛈️</div>
         <div class="banner-body">
-          <div class="banner-label">Active Weather Conditions</div>
+          <div class="banner-label">Active Mountain Weather Condition</div>
           <div class="weather-selector-wrap">
             <label for="weatherSelect" class="sr-only">Weather Condition</label>
             <select id="weatherSelect" class="weather-select">
-              <option value="storm" selected>Severe Mountain Storm (Critical)</option>
+              <option value="storm" selected>Severe Mountain Storm (Critical Risk)</option>
               <option value="fog">Dense Freezing Fog (High Risk)</option>
-              <option value="rain">Continuous Cold Rain (Moderate)</option>
-              <option value="clear">Clear Skies / Window (Low Risk)</option>
+              <option value="rain">Continuous Cold Rain (Moderate Risk)</option>
+              <option value="clear">Clear Weather Window (Low Risk)</option>
             </select>
           </div>
           <p class="weather-impact-text" id="weatherImpactText">
-            Severe gale winds & lightning. Ground transit hazardous, airborne extraction grounded.
+            Severe gale winds (75+ km/h), sub-zero windchill, zero aerial visibility. Ground travel speed reduced 40%.
           </p>
         </div>
       </div>
@@ -73,8 +73,8 @@
     <section class="rescue-teams-section">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Rescue Units & Field Deployment</h2>
-          <p class="section-subtitle">Real-time status of rapid intervention teams (Alpha, Bravo, Charlie)</p>
+          <h2 class="section-title">Field Rescue Units &amp; Deployment Status</h2>
+          <p class="section-subtitle">Real-time tracking of rapid intervention units (Alpha, Bravo, Charlie)</p>
         </div>
         <div class="teams-quick-stat">
           <span class="badge-neutral" id="availableTeamsCount">3 Teams Available</span>
@@ -94,29 +94,29 @@
         <span class="metric-sub">Official Registry Profiles</span>
       </div>
       <div class="metric-card high-metric">
-        <span class="metric-title">Critical / High Priority</span>
+        <span class="metric-title">High Priority</span>
         <span class="metric-val text-red" id="metricHigh">0</span>
         <span class="metric-sub">Immediate dispatch advised</span>
       </div>
       <div class="metric-card med-metric">
         <span class="metric-title">Medium Priority</span>
         <span class="metric-val text-amber" id="metricMed">0</span>
-        <span class="metric-sub">Elevated risk / telemetry gaps</span>
+        <span class="metric-sub">Elevated risk &amp; telemetry gaps</span>
       </div>
       <div class="metric-card low-metric">
         <span class="metric-title">Low Priority</span>
         <span class="metric-val text-green" id="metricLow">0</span>
-        <span class="metric-sub">Monitor telemetry</span>
+        <span class="metric-sub">Monitored / Stable telemetry</span>
       </div>
       <div class="metric-card warning-metric">
-        <span class="metric-title">Active Dispatches</span>
+        <span class="metric-title">Active Deployments</span>
         <span class="metric-val text-blue" id="metricDispatches">0</span>
-        <span class="metric-sub">Teams en route or searching</span>
+        <span class="metric-sub">Teams en route or on scene</span>
       </div>
       <div class="metric-card rescue-metric">
-        <span class="metric-title">Located / Rescued</span>
+        <span class="metric-title">Confirmed Rescued</span>
         <span class="metric-val text-purple" id="metricRescued">0</span>
-        <span class="metric-sub">Accounted in safety</span>
+        <span class="metric-sub">Extracted to safety</span>
       </div>
     </section>
 
@@ -141,9 +141,9 @@
           <label for="priorityFilter">Priority:</label>
           <select id="priorityFilter">
             <option value="ALL">All Priorities</option>
-            <option value="HIGH">High Priority</option>
-            <option value="MEDIUM">Medium Priority</option>
-            <option value="LOW">Low Priority</option>
+            <option value="HIGH">High Priority (&ge;70)</option>
+            <option value="MEDIUM">Medium Priority (40–69)</option>
+            <option value="LOW">Low Priority (&lt;40)</option>
           </select>
         </div>
         <div class="input-group">
@@ -159,7 +159,7 @@
       </div>
       <div class="toolbar-right">
         <button id="rulesBtn" class="btn btn-secondary">
-          <span>📐</span> Scoring Rules
+          <span>📐</span> View Scoring Rules
         </button>
         <button id="resetBtn" class="btn btn-outline-danger">
           <span>🔄</span> Reset Scenario
@@ -171,8 +171,8 @@
     <section class="trekkers-section">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Field Operations Registry (Operation: Lost Signal)</h2>
-          <p class="section-subtitle">Official trekker profiles &mdash; missing data marked as 'Unknown' / 'Not reported'</p>
+          <h2 class="section-title">Missing Trekkers Operations Registry</h2>
+          <p class="section-subtitle">Official personnel profiles &mdash; unconfirmed data explicitly marked as 'Not reported'</p>
         </div>
         <div class="sort-selector">
           <label for="sortBy">Sort by:</label>
@@ -181,7 +181,7 @@
             <option value="scoreAsc">Priority Score (Lowest first)</option>
             <option value="staleDesc">Last Ping (Stalest first)</option>
             <option value="batteryAsc">Battery Level (Lowest first)</option>
-            <option value="nameAsc">Name (A-Z)</option>
+            <option value="nameAsc">Name (A–Z)</option>
           </select>
         </div>
       </div>
@@ -193,8 +193,8 @@
       <div id="noResultsMessage" class="empty-state hidden">
         <div class="empty-icon">🔎</div>
         <h3>No matching trekkers found</h3>
-        <p>Try clearing your search query or loosening your sector and status filters.</p>
-        <button id="clearFiltersBtn" class="btn btn-secondary">Clear Filters</button>
+        <p>Try clearing your search term or adjusting the sector, priority, and status filters.</p>
+        <button id="clearFiltersBtn" class="btn btn-secondary">Clear All Filters</button>
       </div>
     </section>
 
@@ -202,10 +202,10 @@
     <section class="events-log-section">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Incident Command Dispatch & Event Log</h2>
-          <p class="section-subtitle">Timestamped audit trail of dispatches, travel advancements, and status verifications</p>
+          <h2 class="section-title">Incident Command Audit Log</h2>
+          <p class="section-subtitle">Chronological record of dispatches, travel advancements, weather adjustments, and verified rescues</p>
         </div>
-        <button id="clearLogBtn" class="btn btn-sm btn-secondary">Clear Log View</button>
+        <button id="clearLogBtn" class="btn btn-sm btn-secondary">Clear Log Display</button>
       </div>
       <div class="event-log-box" id="eventLogContainer">
         <!-- Rendered dynamically by script.js -->
@@ -216,17 +216,17 @@
     <section class="rules-panel-section">
       <div class="rules-panel-card">
         <div class="rules-header">
-          <h3>Heuristic Priority Scoring Formula &amp; Telemetry Policy</h3>
-          <span class="badge-neutral">Documented Algorithm</span>
+          <h3>Deterministic Risk Scoring Methodology &amp; Telemetry Guidelines</h3>
+          <span class="badge-neutral">Documented Scoring Matrix</span>
         </div>
         <div class="rules-content">
           <p>
             The Rescue Priority Score ranges from <strong>0 to 100+ points</strong>. Scores &ge; 70 are categorized as
-            <strong class="text-red">HIGH Priority</strong>, 40&ndash;69 as <strong class="text-amber">MEDIUM Priority</strong>,
-            and &lt; 40 as <strong class="text-green">LOW Priority</strong>.
+            <strong class="text-red">High Priority</strong> (immediate intervention), 40&ndash;69 as <strong class="text-amber">Medium Priority</strong>
+            (elevated risk or data gaps), and &lt; 40 as <strong class="text-green">Low Priority</strong> (stable or sheltered).
           </p>
           <div class="notice-callout">
-            <strong>Data Integrity Principle:</strong> Per mission guidelines, unavailable data (e.g. unconfirmed battery or signal for TRK-02 through TRK-06) is never presumed safe. Instead, missing telemetry receives an automated <em>Uncertainty Penalty (+15 pts)</em> to prevent premature deprioritization.
+            <strong>Precautionary Safety Principle:</strong> In search-and-rescue operations, missing telemetry is never presumed to mean safety. Instead, profiles with unconfirmed battery, signal, or medical status receive an automated <em>Uncertainty Penalty (+15 pts)</em> to prevent premature deprioritization.
           </div>
           <div class="rules-table-wrapper">
             <table class="rules-table">
@@ -235,45 +235,45 @@
                   <th>Factor</th>
                   <th>Evaluation Condition</th>
                   <th>Score Impact</th>
-                  <th>Rationale</th>
+                  <th>Operational Rationale</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>Reported Injury</strong></td>
-                  <td>Critical (Head trauma, heavy bleeding)<br>Minor / Moderate (Ankle sprain, cold shivering)<br>No injury confirmed / Unknown</td>
+                  <td>Critical Trauma (Head injury, severe fracture)<br>Minor / Mobility Impairment (Ankle sprain, cold shivering)<br>No injury confirmed / Unknown</td>
                   <td><span class="pts pts-high">+45 pts</span><br><span class="pts pts-med">+20 pts</span><br>+0 pts</td>
-                  <td>Immediate physiological risk to life requiring urgent triage.</td>
+                  <td>Immediate physiological risk to life requiring urgent medical extraction.</td>
                 </tr>
                 <tr>
                   <td><strong>Battery Depletion</strong></td>
-                  <td>Battery &le; 10%<br>Battery 11% - 25% (Aarav: 14%)<br>Battery 26% - 50%<br>Unknown / Not reported</td>
+                  <td>Battery &le; 10%<br>Battery 11% - 25% (Aarav Sharma: 14%)<br>Battery 26% - 50%<br>Unknown / Not reported</td>
                   <td><span class="pts pts-high">+25 pts</span><br><span class="pts pts-med">+15 pts</span><br><span class="pts pts-low">+5 pts</span><br><em>Covered by Uncertainty Penalty</em></td>
-                  <td>Imminent loss of beacon, locator transmitter, and thermal emergency light.</td>
+                  <td>Imminent total failure of transponder beacon, locator signal, and emergency light.</td>
                 </tr>
                 <tr>
                   <td><strong>Signal Quality</strong></td>
-                  <td>None (Dead zone)<br>Weak / Poor (1 bar)<br>Unknown / Not reported</td>
+                  <td>None (Dead zone / Lost contact)<br>Weak / Poor (1 bar)<br>Unknown / Not reported</td>
                   <td><span class="pts pts-high">+20 pts</span><br><span class="pts pts-med">+10 pts</span><br><em>Covered by Uncertainty Penalty</em></td>
-                  <td>Impairs geolocation updates and two-way voice check-ins.</td>
+                  <td>Impairs geolocation updates and two-way voice check-ins across mountain ridges.</td>
                 </tr>
                 <tr>
                   <td><strong>Stale Telemetry</strong></td>
-                  <td>Last ping &gt; 180 mins ago (Vikram Malhotra: 05:55 AM)<br>Last ping 120 - 180 mins ago (Rohan Varma: 06:40 AM)<br>Last ping 60 - 120 mins ago (Aarav, Maya, Ananya, Priyamvada)</td>
-                  <td><span class="pts pts-high">+30 pts</span><br><span class="pts pts-high">+20 pts</span><br><span class="pts pts-med">+10 pts</span></td>
-                  <td>Search radius expands quadratically over elapsed travel time.</td>
+                  <td>Last ping &gt; 180 mins ago (Vikram Malhotra: 05:55 AM)<br>Last ping 120 - 180 mins ago (Rohan Varma: 06:40 AM)<br>Last ping 60 - 120 mins ago (Aarav, Maya)<br>Last ping &lt; 60 mins ago (Ananya, Priyamvada)</td>
+                  <td><span class="pts pts-high">+30 pts</span><br><span class="pts pts-high">+20 pts</span><br><span class="pts pts-med">+10 pts</span><br>+0 pts</td>
+                  <td>Search radius expands quadratically over elapsed travel time without updated telemetry.</td>
                 </tr>
                 <tr>
-                  <td><strong>Telemetry Gaps</strong></td>
-                  <td>Signal / Battery / Medical status Unknown or unconfirmed</td>
+                  <td><strong>Uncertainty Penalty</strong></td>
+                  <td>Battery, signal, or medical status unconfirmed by field station</td>
                   <td><span class="pts pts-med">+15 pts</span></td>
                   <td>Precautionary safety principle: lack of information indicates potential blackout.</td>
                 </tr>
                 <tr>
                   <td><strong>Weather Severity</strong></td>
-                  <td>Severe Storm (+15)<br>Freezing Fog (+10)<br>Cold Rain (+5)</td>
+                  <td>Severe Mountain Storm (+15)<br>Dense Freezing Fog (+10)<br>Continuous Cold Rain (+5)<br>Clear Skies (+0)</td>
                   <td><span class="pts pts-high">+5 to +15 pts</span></td>
-                  <td>Increases hypothermia vulnerability and diminishes aerial search visibility.</td>
+                  <td>Adverse weather accelerates hypothermia vulnerability and restricts aerial reconnaissance.</td>
                 </tr>
               </tbody>
             </table>
@@ -292,18 +292,18 @@
       </div>
       <div class="modal-body">
         <p>
-          ResQ Command uses a weighted deterministic model designed for emergency coordinators.
-          Because resources (air support, alpine rescue dogs, paramedic squads) are limited during storms,
-          the algorithm quantifies vulnerability into a single transparent score.
+          RESCUE OPS uses a transparent, deterministic decision-support model designed for emergency coordinators.
+          Because resources (search dogs, ATVs, extraction paramedics) are strictly limited during alpine storms,
+          the algorithm quantifies multi-variable vulnerability into a clear, explainable priority score.
         </p>
-        <h4>Decision Breakdown:</h4>
+        <h4>Operational Decision Tiers:</h4>
         <ul>
-          <li><strong>High Priority (&ge; 70 pts):</strong> Immediate dispatch of nearest search party or standby extraction unit.</li>
-          <li><strong>Medium Priority (40–69 pts):</strong> En route check, drone flyover reconnaissance, or satellite relay alignment.</li>
-          <li><strong>Low Priority (&lt; 40 pts):</strong> Monitored check-ins; directed to hold position under natural shelter.</li>
+          <li><strong>High Priority (&ge; 70 pts):</strong> Immediate dispatch of nearest available rescue team or standby extraction unit.</li>
+          <li><strong>Medium Priority (40–69 pts):</strong> Elevated surveillance, drone reconnaissance, or satellite relay check.</li>
+          <li><strong>Low Priority (&lt; 40 pts):</strong> Monitored check-ins; directed to hold position under shelter.</li>
         </ul>
         <div class="modal-notice">
-          <strong>Official Notice:</strong> This scoring system is a simulated decision-support recommendation tool designed for the Operation: Lost Signal hackathon. It does not replace certified incident command verification.
+          <strong>Decision-Support Notice:</strong> This scoring system is an automated decision-support recommendation tool designed for the Operation: Lost Signal scenario. It is intended to assist, not replace, certified incident commander judgment.
         </div>
       </div>
       <div class="modal-footer">
@@ -316,7 +316,7 @@
   <div id="confirmModal" class="modal-overlay hidden">
     <div class="modal-box">
       <div class="modal-header">
-        <h2 id="confirmModalTitle">Confirm Action</h2>
+        <h2 id="confirmModalTitle">Confirm Operational Status</h2>
         <button id="closeConfirmModalBtn" class="modal-close-btn">&times;</button>
       </div>
       <div class="modal-body">
@@ -327,7 +327,7 @@
       </div>
       <div class="modal-footer">
         <button id="cancelConfirmBtn" class="btn btn-secondary">Cancel</button>
-        <button id="proceedConfirmBtn" class="btn btn-primary">Confirm Verification</button>
+        <button id="proceedConfirmBtn" class="btn btn-primary">Confirm Status Change</button>
       </div>
     </div>
   </div>
@@ -335,7 +335,7 @@
   <footer class="app-footer">
     <div class="footer-container">
       <p><strong>RESCUE OPS</strong> &copy; 2026 &mdash; Search &amp; Rescue Decision Support System.</p>
-      <p class="footer-subtext">Operation: Lost Signal &bull; Zero external dependencies &bull; All distances and ETAs are SIMULATED.</p>
+      <p class="footer-subtext">Operation: Lost Signal &bull; Zero external dependencies &bull; All distances and travel times are SIMULATED.</p>
     </div>
   </footer>
 

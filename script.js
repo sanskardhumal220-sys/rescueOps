@@ -142,7 +142,7 @@ const INITIAL_TEAMS = [
   {
     id: "TEAM-ALPHA",
     name: "Team Alpha",
-    unitType: "Alpine Search & Dog Unit",
+    unitType: "Alpine Search & Rescue Canine Unit",
     status: "Available", // Available | En Route | On Scene | Standby
     assignedTrekkerId: null,
     departureTime: null,
@@ -152,7 +152,7 @@ const INITIAL_TEAMS = [
   {
     id: "TEAM-BRAVO",
     name: "Team Bravo",
-    unitType: "Paramedic & Mountain Extraction",
+    unitType: "Mountain Paramedic & Technical Extraction Unit",
     status: "Available",
     assignedTrekkerId: null,
     departureTime: null,
@@ -162,7 +162,7 @@ const INITIAL_TEAMS = [
   {
     id: "TEAM-CHARLIE",
     name: "Team Charlie",
-    unitType: "All-Terrain Vehicle (ATV) & Drone Recon",
+    unitType: "Rapid All-Terrain Vehicle (ATV) & Aerial Recon Unit",
     status: "Available",
     assignedTrekkerId: null,
     departureTime: null,
@@ -195,28 +195,28 @@ const WEATHER_CONFIG = {
     icon: "⛈️",
     scoreWeight: 15,
     speedMultiplier: 0.6, // Ground travel slowed by 40%
-    impact: "Severe gale winds (75+ km/h), sub-zero windchill, zero aerial visibility. Ground speed reduced 40%."
+    impact: "Severe gale winds (75+ km/h), sub-zero windchill, zero aerial visibility. Ground search speed reduced by 40%."
   },
   fog: {
     name: "Dense Freezing Fog",
     icon: "🌫️",
     scoreWeight: 10,
     speedMultiplier: 0.75,
-    impact: "Visibility below 15 meters, freezing fog condensation, disorienting navigation hazard. Speed slowed 25%."
+    impact: "Dense fog with visibility under 15 meters and disorienting conditions. Ground search speed reduced by 25%."
   },
   rain: {
     name: "Continuous Cold Rain",
     icon: "🌧️",
     scoreWeight: 5,
     speedMultiplier: 0.85,
-    impact: "Slick trail surfaces, rising creeks, and saturated thermal gear. Speed slowed 15%."
+    impact: "Continuous cold rainfall, slick trails, and saturated gear. Ground search speed reduced by 15%."
   },
   clear: {
     name: "Clear Skies / Window",
     icon: "🌤️",
     scoreWeight: 0,
     speedMultiplier: 1.0,
-    impact: "Optimal conditions; standard search parties and drone sweeps fully operational at standard speed."
+    impact: "Optimal field conditions; ground search parties and drone sweeps fully operational at 100% nominal speed."
   }
 };
 
@@ -263,8 +263,8 @@ function evaluateTrekkerRisk(trekker, weatherKey) {
       priorityLevel: "LOW",
       priorityClass: "badge-low",
       cardBorderClass: "priority-low",
-      reasons: ["Trekker safely extracted to medical base. Active hazard mitigated."],
-      tags: [{ label: "Rescued / Safe", type: "low-tag" }],
+      reasons: ["Trekker safely extracted to medical base. Active hazard mitigated and incident closed."],
+      tags: [{ label: "Rescued / Secure", type: "low-tag" }],
       telemetryWarnings: []
     };
   }
@@ -272,36 +272,36 @@ function evaluateTrekkerRisk(trekker, weatherKey) {
   // Located trekkers have reduced search urgency, focus shifts to medical/evac
   if (trekker.status === "Located") {
     score = 25;
-    reasons.push("Trekker visually/verbally located. Search radius locked; extraction ongoing (+25)");
-    tags.push({ label: "Located", type: "med-tag" });
+    reasons.push("Visual/verbal contact established. Primary search phase complete; tactical extraction underway (+25)");
+    tags.push({ label: "Visual Contact (+25)", type: "med-tag" });
   }
 
   // 1. Injury Factor
   if (trekker.injurySeverity === "Critical") {
     score += 45;
-    reasons.push("Critical injury reported requiring urgent life-saving trauma care (+45)");
+    reasons.push("Critical injury reported requiring immediate emergency trauma intervention (+45)");
     tags.push({ label: "Critical Trauma (+45)", type: "high-tag" });
   } else if (trekker.injurySeverity === "Minor") {
     score += 20;
-    reasons.push("Minor injury confirmed (ankle/mobility impaired) (+20)");
-    tags.push({ label: "Reported Injury (+20)", type: "med-tag" });
+    reasons.push("Minor injury confirmed (ankle/mobility impaired; movement restricted) (+20)");
+    tags.push({ label: "Confirmed Injury (+20)", type: "med-tag" });
   }
 
   // 2. Battery Factor
   if (trekker.battery !== null && trekker.battery !== undefined) {
     if (trekker.battery <= 10) {
       score += 25;
-      reasons.push(`Critical battery at ${trekker.battery}%: beacon failure imminent (+25)`);
-      tags.push({ label: `Battery ${trekker.battery}% (+25)`, type: "high-tag" });
+      reasons.push(`Critical battery level (${trekker.battery}%): automated telemetry beacon failure imminent (+25)`);
+      tags.push({ label: `Critical Battery ${trekker.battery}% (+25)`, type: "high-tag" });
       telemetryWarnings.push(`Critical Battery (${trekker.battery}%)`);
     } else if (trekker.battery <= 25) {
       score += 15;
-      reasons.push(`Low battery at ${trekker.battery}% (+15)`);
-      tags.push({ label: `Battery ${trekker.battery}% (+15)`, type: "med-tag" });
+      reasons.push(`Low battery level (${trekker.battery}%): beacon power depleting rapidly (+15)`);
+      tags.push({ label: `Low Battery ${trekker.battery}% (+15)`, type: "med-tag" });
       telemetryWarnings.push(`Low Battery (${trekker.battery}%)`);
     } else if (trekker.battery <= 50) {
       score += 5;
-      reasons.push(`Moderate battery level at ${trekker.battery}% (+5)`);
+      reasons.push(`Moderate battery reserves (${trekker.battery}%) (+5)`);
       tags.push({ label: `Battery ${trekker.battery}% (+5)`, type: "low-tag" });
     }
   }
@@ -310,39 +310,39 @@ function evaluateTrekkerRisk(trekker, weatherKey) {
   if (trekker.signalQuality) {
     if (trekker.signalQuality.includes("None") || trekker.signalQuality.includes("Dead")) {
       score += 20;
-      reasons.push("Zero signal detected — dead zone isolation (+20)");
-      tags.push({ label: "Signal Lost (+20)", type: "high-tag" });
-      telemetryWarnings.push("Dead Zone / Signal Lost");
+      reasons.push("Zero telemetry signal detected — subject isolated in transmission dead zone (+20)");
+      tags.push({ label: "Dead Zone (+20)", type: "high-tag" });
+      telemetryWarnings.push("Dead Zone (No Signal)");
     } else if (trekker.signalQuality.includes("Weak") || trekker.signalQuality.includes("Poor") || trekker.signalQuality.includes("1 bar")) {
       score += 10;
-      reasons.push("Weak signal transmission (1 bar) (+10)");
-      tags.push({ label: "Signal Weak (+10)", type: "med-tag" });
-      telemetryWarnings.push("Weak Signal (1 bar)");
+      reasons.push("Severely degraded signal reception (1-bar transmission) (+10)");
+      tags.push({ label: "Weak Signal (+10)", type: "med-tag" });
+      telemetryWarnings.push("Degraded Signal (1 Bar)");
     }
   }
 
   // 4. Stale Telemetry Factor
   if (trekker.minutesSinceLastPing >= 180) {
     score += 30;
-    reasons.push(`Telemetry severely stale (${trekker.minutesSinceLastPing}m since last ping at ${trekker.lastPingTime}) (+30)`);
-    tags.push({ label: `Stale ${trekker.minutesSinceLastPing}m (+30)`, type: "high-tag" });
-    telemetryWarnings.push(`Critical Telemetry Outage (${trekker.minutesSinceLastPing}m)`);
+    reasons.push(`Critical telemetry outage: no transmission for ${trekker.minutesSinceLastPing} min (last ping ${trekker.lastPingTime}) (+30)`);
+    tags.push({ label: `Telemetry Outage ${trekker.minutesSinceLastPing}m (+30)`, type: "high-tag" });
+    telemetryWarnings.push(`Severe Telemetry Outage (${trekker.minutesSinceLastPing}m)`);
   } else if (trekker.minutesSinceLastPing >= 120) {
     score += 20;
-    reasons.push(`Telemetry stale (${trekker.minutesSinceLastPing}m since ping at ${trekker.lastPingTime}) (+20)`);
-    tags.push({ label: `Stale ${trekker.minutesSinceLastPing}m (+20)`, type: "high-tag" });
+    reasons.push(`Stale telemetry ping: last transmission received ${trekker.minutesSinceLastPing} min ago at ${trekker.lastPingTime} (+20)`);
+    tags.push({ label: `Stale Ping ${trekker.minutesSinceLastPing}m (+20)`, type: "high-tag" });
     telemetryWarnings.push(`Stale Telemetry (${trekker.minutesSinceLastPing}m)`);
   } else if (trekker.minutesSinceLastPing >= 60) {
     score += 10;
-    reasons.push(`Telemetry aging (${trekker.minutesSinceLastPing}m since ping at ${trekker.lastPingTime}) (+10)`);
-    tags.push({ label: `Ping ${trekker.minutesSinceLastPing}m ago (+10)`, type: "med-tag" });
-    telemetryWarnings.push(`Ping >1h ago (${trekker.minutesSinceLastPing}m)`);
+    reasons.push(`Aging telemetry: transmission is ${trekker.minutesSinceLastPing} min old (last ping ${trekker.lastPingTime}) (+10)`);
+    tags.push({ label: `Aging Telemetry ${trekker.minutesSinceLastPing}m (+10)`, type: "med-tag" });
+    telemetryWarnings.push(`Telemetry Delay (${trekker.minutesSinceLastPing}m)`);
   }
 
   // 5. Telemetry Gaps / Uncertainty Penalty (Official requirement: Unknown data must NOT be presumed safe)
   if (!trekker.isOfficialDataComplete) {
     score += 15;
-    reasons.push("Official Telemetry Gap: Battery/Medical status unconfirmed by field station (+15 uncertainty penalty)");
+    reasons.push("Telemetry Gap Penalty: Vital signs, battery level, or physical condition unconfirmed by field sensors (+15 uncertainty penalty; unknown data is not presumed safe)");
     tags.push({ label: "Uncertainty Penalty (+15)", type: "med-tag" });
     telemetryWarnings.push("Unconfirmed Telemetry (Official Gaps)");
   }
@@ -351,7 +351,7 @@ function evaluateTrekkerRisk(trekker, weatherKey) {
   const weatherCfg = WEATHER_CONFIG[weatherKey] || WEATHER_CONFIG.storm;
   if (weatherCfg.scoreWeight > 0) {
     score += weatherCfg.scoreWeight;
-    reasons.push(`Adverse conditions (${weatherCfg.name}) elevate field exposure (+${weatherCfg.scoreWeight})`);
+    reasons.push(`Adverse weather (${weatherCfg.name}) significantly elevates hypothermia and terrain risk (+${weatherCfg.scoreWeight})`);
     tags.push({ label: `Weather: ${weatherCfg.name} (+${weatherCfg.scoreWeight})`, type: "med-tag" });
   }
 
@@ -541,11 +541,11 @@ function computeRecommendedSector(evaluatedList) {
     recommendSectorTitle.textContent = topSector.name;
     sectorRiskScore.textContent = topSector.totalScore;
     recommendSectorDesc.textContent =
-      `High Risk Concentration: ${topSector.highPriorityCount} high-priority profile(s) (${topSector.trekkers.join(", ")}). Advised primary search zone for incident command.`;
+      `Highest Cumulative Threat Density: Identified ${topSector.highPriorityCount} high-priority trekker profile(s) (${topSector.trekkers.join(", ")}). Recommended as the primary priority search zone for immediate tactical deployment.`;
   } else {
-    recommendSectorTitle.textContent = "All Active Threats Controlled";
+    recommendSectorTitle.textContent = "All Active Search Sectors Resolved";
     sectorRiskScore.textContent = "0";
-    recommendSectorDesc.textContent = "All missing personnel in designated sectors are located or extracted.";
+    recommendSectorDesc.textContent = "All missing personnel across designated sectors have been confirmed located or successfully evacuated.";
   }
 }
 
@@ -573,26 +573,26 @@ function renderTeams() {
       assignmentHtml = `
         <div class="team-assignment-info">
           <div class="assignment-target">
-            <strong>Target:</strong> ${assignedTrekker.name} (${assignedTrekker.id})
+            <strong>Target Subject:</strong> ${assignedTrekker.name} (${assignedTrekker.id})
           </div>
           <div class="assignment-meta">
-            <span>📍 ${assignedTrekker.sector}</span>
-            <span>🛣️ Sim. Dist: <strong>${assignedTrekker.simulatedDistanceKm.toFixed(1)} km</strong></span>
-            <span>⏱️ Sim. ETA: <strong>${team.status === 'On Scene' ? 'On Scene' : etaMins + ' min'}</strong></span>
+            <span>📍 Target Sector: <strong>${assignedTrekker.sector}</strong></span>
+            <span>🛣️ Estimated Distance: <strong>${assignedTrekker.simulatedDistanceKm.toFixed(1)} km</strong></span>
+            <span>⏱️ Estimated Transit (ETA): <strong>${team.status === 'On Scene' ? 'On Scene' : etaMins + ' min'}</strong></span>
           </div>
           <div class="team-actions-row">
             ${team.status === 'Available' ? `
               <button class="btn btn-xs btn-primary mark-enroute-btn" data-team="${team.id}">
-                🚀 Mark En Route
+                🚀 Dispatch Unit En Route
               </button>
             ` : ''}
             ${team.status === 'En Route' ? `
               <button class="btn btn-xs btn-warning mark-onscene-btn" data-team="${team.id}">
-                🚩 Mark On Scene
+                🚩 Confirm Arrival On Scene
               </button>
             ` : ''}
             <button class="btn btn-xs btn-secondary recall-team-btn" data-team="${team.id}">
-              ↩️ Unassign / Recall
+              ↩️ Recall Unit to Base
             </button>
           </div>
         </div>
@@ -600,7 +600,7 @@ function renderTeams() {
     } else {
       assignmentHtml = `
         <div class="team-unassigned">
-          <span class="text-dim">Unit is on standby at forward staging base.</span>
+          <span class="text-dim">Unit is currently on standby at the forward staging base, ready for tactical deployment.</span>
         </div>
       `;
     }
@@ -634,7 +634,7 @@ function renderTeams() {
         if (trekker && trekker.status === "Missing") {
           trekker.status = "Search in Progress";
         }
-        logEvent("DISPATCH", `${team.name} departed base En Route to ${trekker ? trekker.name : 'Target'}. Departure time: ${team.departureTime}`);
+        logEvent("DISPATCH", `Field Dispatch: ${team.name} departed forward base en route to ${trekker ? trekker.name : 'designated target'} (Departure: ${team.departureTime}).`);
         updateDashboard();
       }
     });
@@ -647,7 +647,7 @@ function renderTeams() {
       if (team) {
         team.status = "On Scene";
         const trekker = trekkers.find(t => t.id === team.assignedTrekkerId);
-        logEvent("ON_SCENE", `${team.name} arrived On Scene in ${trekker ? trekker.sector : 'designated sector'}. Visual search commencing.`);
+        logEvent("ON_SCENE", `On-Scene Arrival: ${team.name} arrived at target sector coordinates in ${trekker ? trekker.sector : 'designated sector'}. Active search operations underway.`);
         updateDashboard();
       }
     });
@@ -668,7 +668,7 @@ function renderTeams() {
         team.assignedTrekkerId = null;
         team.departureTime = null;
         team.departureSimMinutes = null;
-        logEvent("STANDBY", `${teamName} assignment cleared. Unit returned to standby availability.`);
+        logEvent("STANDBY", `Unit Recall: ${teamName} assignment cleared. Unit returned to forward staging base and is now available for redeployment.`);
         updateDashboard();
       }
     });
@@ -694,7 +694,7 @@ function renderTrekkers(list) {
     card.id = `card-${item.id}`;
 
     // Battery bar health color
-    let batteryDisplay = "Not reported (Unknown)";
+    let batteryDisplay = "Not reported (Telemetry unconfirmed)";
     let batteryBarHtml = `<div class="battery-meter"><div class="battery-fill" style="width: 0%; background: var(--text-dim);"></div></div>`;
 
     if (item.battery !== null && item.battery !== undefined) {
@@ -734,26 +734,26 @@ function renderTrekkers(list) {
       teamControlHtml = `
         <div class="trekker-team-box assigned">
           <div class="team-box-header">
-            <span>🛡️ Assigned Unit: <strong>${assignedTeamObj.name}</strong></span>
+            <span>🛡️ Assigned Rescue Unit: <strong>${assignedTeamObj.name}</strong></span>
             <span class="badge-neutral">${assignedTeamObj.status}</span>
           </div>
           <div class="simulated-transit-line">
-            <span>🛣️ Sim. Dist: <strong>${item.simulatedDistanceKm.toFixed(1)} km</strong></span>
-            <span>⏱️ Sim. ETA: <strong>${assignedTeamObj.status === 'On Scene' ? 'On Scene' : etaMins + ' min'}</strong></span>
+            <span>🛣️ Estimated Distance: <strong>${item.simulatedDistanceKm.toFixed(1)} km</strong></span>
+            <span>⏱️ Estimated Transit (ETA): <strong>${assignedTeamObj.status === 'On Scene' ? 'On Scene' : etaMins + ' min'}</strong></span>
           </div>
-          ${assignedTeamObj.departureTime ? `<div class="transit-sub">Departed: ${assignedTeamObj.departureTime}</div>` : ''}
+          ${assignedTeamObj.departureTime ? `<div class="transit-sub">Dispatched from Base: ${assignedTeamObj.departureTime}</div>` : ''}
         </div>
       `;
     } else if (item.status !== "Rescued") {
       teamControlHtml = `
         <div class="trekker-team-box unassigned">
           <div class="team-assign-wrap">
-            <label for="assignSelect-${item.id}">Assign Unit:</label>
+            <label for="assignSelect-${item.id}">Assign Rescue Team:</label>
             <select id="assignSelect-${item.id}" class="team-assign-select" data-trekker="${item.id}">
-              <option value="">-- Select Available Team --</option>
+              <option value="">-- Select Available Rescue Unit --</option>
               ${availableTeams.map(tm => `<option value="${tm.id}">${tm.name} (${tm.unitType})</option>`).join("")}
             </select>
-            <button class="btn btn-sm btn-primary assign-btn" data-trekker="${item.id}">Assign</button>
+            <button class="btn btn-sm btn-primary assign-btn" data-trekker="${item.id}">Assign Rescue Team</button>
           </div>
         </div>
       `;
@@ -765,10 +765,10 @@ function renderTrekkers(list) {
       statusButtonsHtml = `
         <div class="status-action-group">
           <button class="btn btn-sm btn-warning mark-status-btn" data-trekker="${item.id}" data-newstatus="Located">
-            📍 Verify Located
+            📍 Confirm Located
           </button>
           <button class="btn btn-sm btn-primary mark-status-btn" data-trekker="${item.id}" data-newstatus="Rescued">
-            🚁 Verify Rescued
+            🚁 Confirm Rescue
           </button>
         </div>
       `;
@@ -776,14 +776,14 @@ function renderTrekkers(list) {
       statusButtonsHtml = `
         <div class="status-action-group">
           <button class="btn btn-sm btn-primary mark-status-btn" data-trekker="${item.id}" data-newstatus="Rescued">
-            🚁 Verify Rescued
+            🚁 Confirm Rescue
           </button>
         </div>
       `;
     } else if (item.status === "Rescued") {
       statusButtonsHtml = `
         <div class="status-action-group">
-          <span class="badge-low" style="padding: 0.35rem 0.75rem; font-weight:700;">✅ Rescued &amp; Secured</span>
+          <span class="badge-low" style="padding: 0.35rem 0.75rem; font-weight:700;">✅ Confirmed Rescued &amp; Secured</span>
         </div>
       `;
     }
@@ -791,7 +791,7 @@ function renderTrekkers(list) {
     // Reasons & Tags
     const reasonsHtml = item.risk.reasons.length > 0
       ? item.risk.reasons.map(r => `• ${r}`).join("<br>")
-      : "Telemetry stable, no immediate distress factors detected.";
+      : "Telemetry parameters within nominal baseline; continuing routine tactical monitoring.";
 
     const tagsHtml = item.risk.tags.map(t => `<span class="score-tag ${t.type}">${t.label}</span>`).join("");
 
@@ -818,29 +818,29 @@ function renderTrekkers(list) {
       <div class="card-body">
         <div class="telemetry-grid">
           <div class="telemetry-item">
-            <span class="telemetry-label">Last Ping Time</span>
+            <span class="telemetry-label">Last Telemetry Ping</span>
             <span class="telemetry-val">
               🕒 ${item.lastPingTime}
-              <small style="color:var(--text-dim); font-size:0.75rem;">(${item.minutesSinceLastPing}m ago)</small>
+              <small style="color:var(--text-dim); font-size:0.75rem;">(${item.minutesSinceLastPing}m elapsed)</small>
             </span>
           </div>
 
           <div class="telemetry-item">
             <span class="telemetry-label">Signal Quality</span>
             <span class="telemetry-val">
-              📶 ${item.signalQuality}
+              📶 ${item.signalQuality || 'Not reported'}
             </span>
           </div>
 
           <div class="telemetry-item">
-            <span class="telemetry-label">Elevation / Terrain</span>
+            <span class="telemetry-label">Verified Elevation</span>
             <span class="telemetry-val" style="font-size:0.8rem;">
               ⛰️ ${item.elevation || 'Not reported'}
             </span>
           </div>
 
           <div class="telemetry-item">
-            <span class="telemetry-label">Age / Medical</span>
+            <span class="telemetry-label">Verified Age</span>
             <span class="telemetry-val" style="font-size:0.8rem;">
               👤 ${item.age !== 'Not reported' ? item.age + ' yrs' : 'Not reported'}
             </span>
@@ -856,11 +856,11 @@ function renderTrekkers(list) {
         </div>
 
         <div class="injury-box ${item.injurySeverity !== 'None' && item.injurySeverity !== 'Unknown' ? 'injured' : ''}">
-          <div class="injury-header">Reported Situation &amp; Gear:</div>
+          <div class="injury-header">Reported Field Situation &amp; Verified Gear:</div>
           <div class="injury-desc">
             ${item.situation}
           </div>
-          ${item.gear ? `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">🎒 Gear: ${item.gear}</div>` : ''}
+          ${item.gear ? `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">🎒 Emergency Gear: ${item.gear}</div>` : ''}
         </div>
 
         ${teamControlHtml}
@@ -868,7 +868,7 @@ function renderTrekkers(list) {
 
         <div class="decision-explanation">
           <div class="explanation-title">
-            <span>Decision-Support Rationale</span>
+            <span>Why This Trekker Is Prioritized</span>
             <span style="font-family:var(--font-mono);">${item.risk.score} PTS</span>
           </div>
           <div class="explanation-text">
@@ -892,7 +892,7 @@ function renderTrekkers(list) {
       const teamId = select.value;
 
       if (!teamId) {
-        alert("Please select an available rescue unit from the dropdown.");
+        alert("Please select an available rescue unit from the deployment dropdown.");
         return;
       }
 
@@ -900,13 +900,13 @@ function renderTrekkers(list) {
       const trekker = trekkers.find(t => t.id === trekkerId);
 
       if (!team || !trekker) {
-        alert("Selected team or trekker could not be found.");
+        alert("Operational Error: The requested team or trekker record could not be found.");
         return;
       }
 
       // Verify single-assignment lock in logic (both status and assignedTrekkerId)
       if (team.status !== "Available" || team.assignedTrekkerId !== null) {
-        alert(`Rule Enforcement: ${team.name} is already deployed to another assignment (${team.assignedTrekkerId}). A team cannot handle multiple active tasks.`);
+        alert(`Deployment Restriction: ${team.name} is actively deployed to another mission (${team.assignedTrekkerId}). Standard rescue protocol prohibits dual concurrent assignments.`);
         return;
       }
 
@@ -921,7 +921,7 @@ function renderTrekkers(list) {
         trekker.status = "Search in Progress";
       }
 
-      logEvent("ASSIGNMENT", `Coordinator assigned ${team.name} to ${trekker.name} (${trekker.id}) in ${trekker.sector}. Unit is immediately En Route (Departure: ${team.departureTime}).`);
+      logEvent("ASSIGNMENT", `Tactical Assignment: ${team.name} assigned to locate ${trekker.name} (${trekker.id}) in ${trekker.sector}. Unit is immediately en route (Departure: ${team.departureTime}).`);
       updateDashboard();
     });
   });
@@ -941,11 +941,15 @@ function renderTrekkers(list) {
         newStatus
       };
 
-      confirmModalTitle.textContent = `Confirm Field Status: ${newStatus}`;
-      confirmModalMessage.textContent = `Are you sure you want to mark ${trekker.name} (${trekker.id}) as "${newStatus}"?`;
+      confirmModalTitle.textContent = newStatus === "Rescued"
+        ? "Confirm Successful Rescue & Extraction"
+        : "Confirm Visual / Verbal Location Contact";
+      confirmModalMessage.textContent = newStatus === "Rescued"
+        ? `Are you sure you want to mark ${trekker.name} (${trekker.id}) as Rescued? This will confirm successful evacuation to base.`
+        : `Are you sure you want to mark ${trekker.name} (${trekker.id}) as Located? This confirms searchers have established visual or voice contact.`;
       confirmModalDetail.textContent = newStatus === "Rescued"
-        ? `Marking as Rescued will release assigned unit (${trekker.assignedTeam || 'none'}) and log the extraction in the audit trail.`
-        : `Marking as Located establishes visual/verbal contact and updates incident command metrics.`;
+        ? `Operational consequence: The assigned rescue unit (${trekker.assignedTeam || 'none'}) will be automatically released back to standby availability, and this extraction will be recorded in the official mission audit log.`
+        : `Operational consequence: Search urgency will transition to extraction protocols, and incident command metrics will be updated immediately.`;
 
       confirmModal.classList.remove("hidden");
     });
@@ -956,7 +960,7 @@ function renderTrekkers(list) {
 function renderEventLog() {
   if (!eventLogContainer) return;
   if (eventLogs.length === 0) {
-    eventLogContainer.innerHTML = `<div class="log-empty">No logged dispatch events yet. Operations will log automatically.</div>`;
+    eventLogContainer.innerHTML = `<div class="log-empty">No logged dispatch events. All tactical operations will be recorded here in chronological order.</div>`;
     return;
   }
 
@@ -994,14 +998,14 @@ function advanceSimulationTime() {
         if (trekker.simulatedDistanceKm <= 0.1) {
           trekker.simulatedDistanceKm = 0;
           team.status = "On Scene";
-          logEvent("ARRIVAL", `SIMULATED ARRIVAL: ${team.name} has reached target destination in ${trekker.sector} for ${trekker.name}.`);
+          logEvent("ARRIVAL", `Simulated Transit Arrival: ${team.name} has arrived on scene in ${trekker.sector} to initiate extraction for ${trekker.name}.`);
         }
         movementLogged = true;
       }
     }
   });
 
-  logEvent("TIME_ADVANCE", `Simulation clock advanced 5 minutes to ${timeStr}.${movementLogged ? ' En route units progressed.' : ''}`);
+  logEvent("TIME_ADVANCE", `Mission Timeline Advanced: Clock advanced +5 minutes to ${timeStr}.${movementLogged ? ' En route units progressed toward target sectors.' : ''}`);
   updateDashboard();
 }
 
@@ -1033,7 +1037,7 @@ sortBy.addEventListener("change", (e) => {
 
 weatherSelect.addEventListener("change", (e) => {
   currentWeather = e.target.value;
-  logEvent("WEATHER_CHANGE", `Weather updated to ${WEATHER_CONFIG[currentWeather].name}. Priority scores and transit speeds recalculated.`);
+  logEvent("WEATHER_CHANGE", `Meteorological Advisory: Weather updated to ${WEATHER_CONFIG[currentWeather].name}. Exposure risk scores and team transit speeds recalculated.`);
   updateDashboard();
 });
 
@@ -1062,7 +1066,7 @@ resetBtn.addEventListener("click", () => {
   weatherSelect.value = "storm";
 
   eventLogs = [];
-  logEvent("SYSTEM_RESET", "Incident scenario restored to initial state (09:00 AM, Severe Mountain Storm).");
+  logEvent("SYSTEM_RESET", "Mission Reset: Incident scenario restored to initial operational baseline (09:00 AM, Severe Mountain Storm).");
   updateDashboard();
 });
 
@@ -1123,12 +1127,12 @@ proceedConfirmBtn.addEventListener("click", () => {
           team.assignedTrekkerId = null;
           team.departureTime = null;
           team.departureSimMinutes = null;
-          logEvent("TEAM_RELEASED", `${team.name} released from duty following successful rescue of ${trekker.name}.`);
+          logEvent("TEAM_RELEASED", `Unit Demobilization: ${team.name} released from tactical mission following verified rescue of ${trekker.name}. Unit restored to standby status.`);
         }
         trekker.assignedTeam = null;
       }
 
-      logEvent("STATUS_UPDATE", `Verified status change: ${trekker.name} (${trekker.id}) is now marked as ${newStatus}.`);
+      logEvent("STATUS_UPDATE", `Operational Status Change: ${trekker.name} (${trekker.id}) confirmed as ${newStatus}. Mission audit log updated.`);
     }
 
     confirmModal.classList.add("hidden");
@@ -1148,5 +1152,5 @@ window.addEventListener("click", (e) => {
 });
 
 // Initial boot
-logEvent("SYSTEM_INIT", "RESCUE OPS initialized. Monitoring 6 official profiles for Operation: Lost Signal.");
+logEvent("SYSTEM_INIT", "Mission Command Online: Initialized RESCUE OPS command dashboard. Actively tracking 6 official subject profiles for Operation: Lost Signal.");
 updateDashboard();
