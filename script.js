@@ -896,6 +896,14 @@ function renderTrekkers(list) {
         return;
       }
 
+      const team = teams.find(t => t.id === teamId);
+      const trekker = trekkers.find(t => t.id === trekkerId);
+
+      if (!team || !trekker) {
+        alert("Selected team or trekker could not be found.");
+        return;
+      }
+
       // Verify single-assignment lock in logic (both status and assignedTrekkerId)
       if (team.status !== "Available" || team.assignedTrekkerId !== null) {
         alert(`Rule Enforcement: ${team.name} is already deployed to another assignment (${team.assignedTrekkerId}). A team cannot handle multiple active tasks.`);
